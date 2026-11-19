@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C++ Lab – Pregătire pentru 10</title>
+<style>
+:root{--bg:#f3f6fc;--surface:#fff;--surface2:#edf2fa;--ink:#17233b;--muted:#63718a;--line:#d9e1ef;--accent:#315ee8;--accent2:#e8eeff;--good:#11845b;--bad:#c0392b;--warn:#a66a00;--code:#101827;--codeink:#e9f0ff;--shadow:0 8px 26px #20345b12}
+[data-theme="dark"]{--bg:#0c1220;--surface:#151e30;--surface2:#202c42;--ink:#edf2ff;--muted:#a6b2c8;--line:#2d3b54;--accent:#8ca8ff;--accent2:#26365c;--good:#53d6a1;--bad:#ff8177;--warn:#ffd06b;--code:#080d17;--codeink:#e9f0ff;--shadow:0 8px 26px #0005}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,Segoe UI,Arial;transition:background .2s,color .2s}
+header{padding:35px 22px;background:linear-gradient(120deg,#142653,#315ee8);color:#fff}header .wrap,main{max-width:1200px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:14px}.eyebrow{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:#d7e2ff;font-weight:800}h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;margin:8px 0 12px}header p{max-width:850px;color:#e5ebff;margin:0}.top button{background:#fff;color:#1b3475}
+main{padding:22px 16px 70px}.layout{display:grid;grid-template-columns:235px minmax(0,1fr);gap:20px}nav{position:sticky;top:12px;align-self:start;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:15px;max-height:calc(100vh - 24px);overflow:auto;box-shadow:var(--shadow)}nav b{display:block;margin-bottom:8px}nav a{display:block;color:var(--accent);text-decoration:none;padding:4px 0;font-size:.9rem}nav a:hover{text-decoration:underline}
+.card,.intro{background:var(--surface);border:1px solid var(--line);border-radius:17px;padding:22px;margin-bottom:17px;box-shadow:var(--shadow)}h2{font-size:1.5rem;margin:0 0 12px}h3{font-size:1.08rem;margin:20px 0 8px;color:var(--accent)}p{margin:8px 0}ul,ol{padding-left:23px}li{margin:5px 0}.muted,.small{color:var(--muted)}.small{font-size:.88rem}.tag{display:inline-block;background:var(--accent2);color:var(--accent);border-radius:30px;padding:3px 10px;font-size:.8rem;font-weight:800}
+.note,.warning,.good{padding:12px 14px;border-radius:11px;margin:12px 0}.note{background:var(--accent2);border-left:4px solid var(--accent)}.warning{background:color-mix(in srgb,var(--warn) 12%,var(--surface));border-left:4px solid var(--warn)}.good{background:color-mix(in srgb,var(--good) 12%,var(--surface));border-left:4px solid var(--good)}
+pre{background:var(--code);color:var(--codeink);padding:15px;border-radius:12px;overflow:auto;font:13.5px/1.55 ui-monospace,Consolas,monospace}code{font-family:ui-monospace,Consolas,monospace;background:var(--surface2);padding:2px 5px;border-radius:5px}pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0}td,th{border:1px solid var(--line);padding:9px;text-align:left}th{background:var(--surface2)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.tile{background:var(--surface2);border:1px solid var(--line);border-radius:13px;padding:14px}
+button{background:var(--accent);color:white;border:0;border-radius:10px;padding:10px 15px;font-weight:750;cursor:pointer}button:hover{filter:brightness(1.08)}button.secondary{background:var(--surface2);color:var(--ink);border:1px solid var(--line)}button:disabled{opacity:.55;cursor:not-allowed}
+textarea,.editor{width:100%;min-height:240px;background:var(--code);color:var(--codeink);border:1px solid #43516a;border-radius:12px;padding:14px;font:13px/1.55 ui-monospace,Consolas,monospace;resize:vertical;tab-size:4}
+input[type=text],input[type=number]{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:10px;max-width:180px}
+.output{white-space:pre-wrap;background:var(--code);color:var(--codeink);padding:13px;border-radius:10px;min-height:52px;font:13px/1.5 ui-monospace,Consolas,monospace}
+.status{padding:10px 12px;border-radius:10px;background:var(--surface2);margin-top:10px}.ok{color:var(--good);font-weight:800}.err{color:var(--bad);font-weight:800}.maybe{color:var(--warn);font-weight:800}
+.exercise{border:1px solid var(--line);border-radius:13px;padding:15px;margin:12px 0;background:var(--surface2)}.answer{display:none;margin-top:10px;padding:10px;border-radius:9px;background:var(--surface)}.answer.show{display:block}
+.progress{height:9px;background:var(--surface2);border-radius:20px;overflow:hidden}.progress span{display:block;height:100%;background:var(--accent);width:0;transition:width .2s}
+.diagram{width:100%;height:auto;background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:8px}
+.video{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:12px;margin:9px 0;text-decoration:none;color:var(--ink);background:var(--surface2)}.video .play{font-size:1.4rem}
+footer{text-align:center;color:var(--muted);padding:25px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}nav{position:static;max-height:none}.grid{grid-template-columns:1fr}.card,.intro{padding:17px}.top{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="top"><span class="eyebrow">C++ LAB • învață activ, nu pe de rost</span><button id="themeBtn" onclick="toggleTheme()">🌙 Tema întunecată</button></div>
+<h1>Pregătire pentru 10 la parțial</h1>
+<p>Teorie pe înțelesul tău, exemple, diagrame, exerciții cu verificare, teste și un compilator online pentru cod C++. Lucrează pas cu pas și verifică dacă ai înțeles cu adevărat.</p>
+</div></header>
+<main><div class="layout">
+<nav><b>📚 Traseu de învățare</b>
+<a href="#start">Start aici</a><a href="#tipuri">Variabile și tipuri</a><a href="#io">Citire și afișare</a><a href="#if">Condiții</a><a href="#loops">Bucle</a><a href="#arrays">Tablouri</a><a href="#patterns">Tipare pe tablouri</a><a href="#math">Operatori / și %</a><a href="#greedy">Greedy</a><a href="#transactions">Stoc și actualizare sigură</a><a href="#complexity">Complexitate</a><a href="#deep-theory">Teorie aprofundată</a><a href="#worked">Exemple compilabile</a><a href="#practice">Exerciții interactive</a><a href="#quiz">Test de verificare</a><a href="#compiler">Compilator C++</a><a href="#videos">Video și resurse</a><a href="#exam">Plan pentru simulare</a>
+<hr><div class="small">Progresul tău</div><div class="progress"><span id="progressBar"></span></div><div class="small" id="progressText">0 / 8 lecții marcate</div></nav>
+<div>
+<section class="intro" id="start">
+<span class="tag">Misiunea ta: 10/10</span><h2>Învață în 3 pași</h2>
+<div class="grid"><div class="tile"><b>1. Înțelege</b><p>Parcurge teoria și urmărește diagramele. Nu memora cod fără să știi ce face fiecare linie.</p></div><div class="tile"><b>2. Aplică</b><p>Completează exercițiile direct în pagină. Primești feedback și indicii.</p></div><div class="tile"><b>3. Testează</b><p>Rulează codul în compilator și încearcă intrări-limită, nu doar exemplul fericit.</p></div><div class="tile"><b>4. Explică</b><p>Dacă poți explica algoritmul cu propriile cuvinte, ești aproape de stăpânirea lui.</p></div></div>
+<div class="note"><b>Important despre compilator:</b> rularea C++ se face prin serviciul online Wandbox și necesită internet. Codul introdus este trimis către acel serviciu pentru compilare. Dacă serviciul nu răspunde sau browserul blochează cererea, folosește compilatorul local (Code::Blocks / Visual Studio) și păstrează exercițiile din pagină.</div>
+</section>
+
+<section class="card" id="tipuri"><h2>1. Variabile și tipuri de date</h2>
+<p>O variabilă este o zonă de memorie cu nume, în care păstrezi o valoare. Tipul spune ce fel de valoare poate stoca.</p>
+<table><tr><th>Tip</th><th>Utilizare</th><th>Exemplu</th></tr><tr><td><code>int</code></td><td>numere întregi</td><td>număr de bancnote</td></tr><tr><td><code>long long</code></td><td>întregi foarte mari</td><td>sume mari / produse</td></tr><tr><td><code>double</code></td><td>numere cu zecimale</td><td>medie, preț</td></tr><tr><td><code>char</code></td><td>un caracter</td><td>opțiune de meniu</td></tr><tr><td><code>bool</code></td><td>true sau false</td><td>cerere posibilă?</td></tr></table>
+<pre><code>int varsta = 19;
+double medie = 9.25;
+bool valid = true;
+const int N = 7;</code></pre>
+<p><code>const</code> înseamnă că valoarea nu poate fi modificată după inițializare. Inițializează contoarele și sumele cu 0.</p>
+<div class="exercise"><b>Mini-exercițiu:</b> ce tip alegi pentru numărul de produse dintr-un depozit? <select id="qtype"><option value="">Alege…</option><option>double</option><option>int</option><option>char</option></select> <button onclick="checkSelect('qtype','int','typeFeedback')">Verifică</button><div id="typeFeedback" class="status"></div></div>
+<label><input type="checkbox" class="lesson" onchange="updateProgress()"> Am înțeles variabilele și tipurile</label></section>
+
+<section class="card" id="io"><h2>2. Citirea și afișarea</h2><p><code>cin &gt;&gt;</code> citește, iar <code>cout &lt;&lt;</code> afișează.</p>
+<pre><code>int a, b;
+cin >> a >> b;
+cout << "Suma = " << a + b;</code></pre>
+<p>Exemplu: programul citește două numere și afișează suma. Încearcă-l în compilatorul de mai jos.</p>
+<label><input type="checkbox" class="lesson" onchange="updateProgress()"> Am înțeles cin și cout</label></section>
+
+<section class="card" id="if"><h2>3. Condiții: if / else</h2><p>O condiție permite alegerea unei ramuri în funcție de o expresie logică.</p>
+<pre><code>if (nota >= 5 && nota <= 10) {
+    cout << "Nota valida";
+} else {
+    cout << "Nota invalida";
+}</code></pre>
+<table><tr><th>Operator</th><th>Înseamnă</th></tr><tr><td><code>==</code></td><td>egalitate</td></tr><tr><td><code>!=</code></td><td>diferit</td></tr><tr><td><code>&lt; &gt; &lt;= &gt;=</code></td><td>comparații</td></tr><tr><td><code>&amp;&amp;</code></td><td>ȘI – ambele condiții</td></tr><tr><td><code>||</code></td><td>SAU – cel puțin una</td></tr><tr><td><code>!</code></td><td>negație</td></tr></table>
+<div class="warning">Nu confunda <code>=</code> (atribuire) cu <code>==</code> (comparație).</div>
+<div class="exercise"><b>Completează condiția:</b> verifică dacă <code>x</code> este pozitiv. <br><input id="ifAnswer" type="text" placeholder="ex: x > 0"><button onclick="checkText('ifAnswer',['x > 0','0 < x'],'ifFeedback','Corect! Condiția este adevărată când x este strict pozitiv.')">Verifică</button><div id="ifFeedback" class="status"></div></div>
+<label><input type="checkbox" class="lesson" onchange="updateProgress()"> Am înțeles condițiile</label></section>
+
+<section class="card" id="loops"><h2>4. Bucle: for, while, do-while</h2>
+<p>O <b>buclă</b> repetă un grup de instrucțiuni. O folosim când nu vrem să scriem aceeași instrucțiune de mai multe ori. Orice buclă trebuie să aibă: <b>pornire</b>, <b>condiție</b>, <b>modificarea variabilei de control</b> și un moment în care se oprește.</p>
+<div class="grid">
+<div class="tile"><b><code>for</code> – repetări numărabile</b><p>O alegi când știi de câte ori repeți sau când parcurgi indicii unui tablou.</p><pre><code>for (int i = 0; i < 5; i++) {
+    cout << i << " ";
+}
+// afișează: 0 1 2 3 4</code></pre><p><code>int i = 0</code> se execută o singură dată; <code>i &lt; 5</code> se verifică înaintea fiecărei repetări; <code>i++</code> se execută după corp.</p></div>
+<div class="tile"><b><code>while</code> – repetări condiționate</b><p>O alegi când nu știi dinainte câte repetări vor fi necesare. Condiția se verifică înainte de corp.</p><pre><code>int x;
+cin >> x;
+while (x != 0) {
+    cout << "Ai introdus " << x << "\\n";
+    cin >> x;
+}</code></pre><p>Dacă prima valoare este 0, corpul nu se execută deloc.</p></div>
+</div>
+<h3>Cum alegi bucla potrivită?</h3>
+<table><tr><th>Situație</th><th>Bucla potrivită</th><th>Motiv</th></tr>
+<tr><td>Parcurgi toate cele 7 bancnote</td><td><code>for</code></td><td>Știi exact câte poziții ai.</td></tr>
+<tr><td>Citești cereri până apare 0</td><td><code>while</code> sau <code>do-while</code></td><td>Numărul cererilor este necunoscut.</td></tr>
+<tr><td>Afișezi un meniu cel puțin o dată</td><td><code>do-while</code></td><td>Meniul trebuie afișat înainte de verificarea repetării.</td></tr></table>
+<h3><code>do-while</code> – execută întâi, verifică după</h3>
+<pre><code>int optiune;
+do {
+    cout << "1 - Continua, 0 - Iesire: ";
+    cin >> optiune;
+} while (optiune != 0);</code></pre>
+<p>Observă punctul și virgula de după <code>while (...);</code>. La <code>do-while</code> este obligatorie.</p>
+<h3>Urmărește fiecare repetare (dry run)</h3>
+<p>Pentru <code>for (int i=1; i&lt;=4; i++) suma += i;</code>, variabila <code>suma</code> pornește de la 0:</p>
+<table><tr><th>Repetare</th><th>i</th><th>Calcul</th><th>suma după</th></tr><tr><td>1</td><td>1</td><td>0 + 1</td><td>1</td></tr><tr><td>2</td><td>2</td><td>1 + 2</td><td>3</td></tr><tr><td>3</td><td>3</td><td>3 + 3</td><td>6</td></tr><tr><td>4</td><td>4</td><td>6 + 4</td><td>10</td></tr></table>
+<h3>Greșeli frecvente</h3>
+<ul><li><b>Buclă infinită:</b> condiția rămâne mereu adevărată, de exemplu uiți să citești o nouă valoare sau să modifici <code>i</code>.</li><li><b>O repetare în plus:</b> folosești <code>i &lt;= n</code> când indicii valizi sunt de la 0 la <code>n-1</code>.</li><li><b>Punct și virgulă accidental:</b> <code>for (...);</code> are corpul gol; instrucțiunile următoare nu fac parte din buclă.</li><li><b>Citire lipsă:</b> în bucla de cereri trebuie citită următoarea valoare, altfel programul poate repeta aceeași cerere.</li></ul>
+<div class="exercise"><b>Exercițiu:</b> ce buclă este potrivită pentru citirea unui număr necunoscut de comenzi până la introducerea lui 0? <select id="loopAnswer"><option value="">Alege…</option><option>for</option><option>while</option><option>niciuna</option></select><button onclick="checkSelect('loopAnswer','while','loopFeedback')">Verifică</button><div id="loopFeedback" class="status"></div></div>
+<label><input type="checkbox" class="lesson" onchange="updateProgress()"> Am înțeles buclele</label></section>
+
+<section class="card" id="arrays"><h2>5. Tablouri unidimensionale</h2>
+<p>Un <b>tablou</b> (vector) este o zonă de memorie în care păstrezi mai multe valori de același tip. În loc să declari separat <code>bancnota1</code>, <code>bancnota2</code> etc., folosești un singur nume și accesezi elementele prin indici.</p>
+<svg class="diagram" viewBox="0 0 720 150" role="img" aria-label="Tablou cu cinci elemente"><text x="18" y="25" fill="currentColor" font-size="16">vector v[5]</text><g font-size="18" text-anchor="middle"><rect x="25" y="45" width="125" height="55" rx="7" fill="#dce6ff" stroke="#315ee8"/><rect x="160" y="45" width="125" height="55" rx="7" fill="#dce6ff" stroke="#315ee8"/><rect x="295" y="45" width="125" height="55" rx="7" fill="#dce6ff" stroke="#315ee8"/><rect x="430" y="45" width="125" height="55" rx="7" fill="#dce6ff" stroke="#315ee8"/><rect x="565" y="45" width="125" height="55" rx="7" fill="#dce6ff" stroke="#315ee8"/><g fill="#17233b"><text x="87" y="80">4</text><text x="222" y="80">7</text><text x="357" y="80">2</text><text x="492" y="80">9</text><text x="627" y="80">1</text></g><g fill="currentColor" font-size="14"><text x="87" y="125">index 0</text><text x="222" y="125">index 1</text><text x="357" y="125">index 2</text><text x="492" y="125">index 3</text><text x="627" y="125">index 4</text></g></g></svg>
+<h3>Declarare, inițializare și accesare</h3>
+<pre><code>const int N = 5;
+int v[N] = {4, 7, 2, 9, 1};
+
+cout << v[0]; // primul element: 4
+v[2] = 8;     // modifică al treilea element
+cout << v[2]; // afișează 8</code></pre>
+<p><code>N</code> reprezintă numărul de elemente, nu ultimul index. Pentru <code>N=5</code>, indicii valizi sunt <code>0, 1, 2, 3, 4</code>, iar ultimul este întotdeauna <code>N-1</code>.</p>
+<div class="warning"><b>Foarte important:</b> <code>v[5]</code> este în afara tabloului când ai declarat <code>v[5]</code>. Nu există poziția 5; există pozițiile 0–4. Accesarea în afara limitelor poate produce rezultate imprevizibile.</div>
+<h3>Citirea și afișarea unui tablou</h3>
+<pre><code>int v[100], n;
+cin >> n;                 // câte elemente folosim
+for (int i = 0; i < n; i++)
+    cin >> v[i];          // citim pozițiile 0 ... n-1
+
+for (int i = 0; i < n; i++)
+    cout << v[i] << " ";  // afișăm aceleași poziții</code></pre>
+<p>În acest exemplu, <code>n</code> trebuie să fie cel mult 100. Tabloul are capacitatea 100, dar pot fi folosite doar primele <code>n</code> poziții.</p>
+<h3>Două tablouri corelate</h3>
+<pre><code>int valoare[4] = {200, 100, 50, 20};
+int stoc[4]    = {  2,   3,  10,  5};
+
+// valoare[2] și stoc[2] se referă la aceeași categorie:
+// bancnote de 50 lei, cu stoc de 10 bucăți.</code></pre>
+<p>Legătura dintre tablouri este dată de <b>același index</b>. Dacă <code>i</code> este 2, atunci <code>valoare[i]</code> și <code>stoc[i]</code> descriu aceeași categorie. Nu sorta sau reordona un singur tablou separat, fiindcă ai rupe asocierea.</p>
+<h3>Tablou constant și tablou modificabil</h3>
+<p>Valorile nominale pot fi declarate <code>const</code> dacă nu trebuie schimbate. Stocul trebuie să rămână modificabil, pentru că se actualizează după tranzacții.</p>
+<pre><code>const int valori[4] = {200, 100, 50, 20};
+int stoc[4] = {2, 3, 10, 5};</code></pre>
+<div class="exercise"><b>Exercițiu de indexare:</b> pentru <code>int a[6]</code>, care este ultimul index valid? <input id="arrAnswer" type="number" placeholder="index"><button onclick="checkNumber('arrAnswer',5,'arrFeedback','Exact: indexarea începe de la 0, deci ultimul index este N-1.')">Verifică</button><div id="arrFeedback" class="status"></div></div>
+<label><input type="checkbox" class="lesson" onchange="updateProgress()"> Am înțeles tablourile</label></section>
+
+<section class="card" id="patterns"><h2>6. Tipare fundamentale pe tablouri</h2>
+<p>Un <b>tipar</b> este o schemă de instrucțiuni pe care o poți adapta la multe exerciții. În problemele de examen, de multe ori nu trebuie să inventezi algoritmul de la zero: identifici dacă ți se cere o sumă, o numărare, un maxim, o căutare sau o verificare.</p>
+<h3>1. Parcurgerea – baza tuturor tiparelor</h3>
+<pre><code>for (int i = 0; i < n; i++) {
+    // aici analizezi elementul v[i]
+}</code></pre>
+<p><code>i</code> este poziția curentă, iar <code>v[i]</code> este valoarea aflată pe acea poziție. Bucla trece prin fiecare element o singură dată.</p>
+<h3>2. Sumă – aduni valori</h3>
+<pre><code>int suma = 0;                 // valoare neutră pentru adunare
+for (int i = 0; i < n; i++) {
+    suma = suma + v[i];
+}</code></pre>
+<p>De ce începi cu 0? Pentru că 0 nu schimbă rezultatul adunării. La fiecare pas adaugi elementul curent la totalul deja calculat.</p>
+<p>Exemplu: pentru <code>{3, 5, 2}</code>, suma evoluează astfel: 0 → 3 → 8 → 10.</p>
+<h3>3. Numărare – numeri câte elemente respectă o condiție</h3>
+<pre><code>int cnt = 0;
+for (int i = 0; i < n; i++) {
+    if (v[i] % 2 == 0) {
+        cnt++;
+    }
+}</code></pre>
+<p>Contorul crește cu 1 doar când condiția este adevărată. Pentru valorile <code>{3, 8, 2, 5}</code>, rezultatul este 2, fiindcă există două numere pare.</p>
+<h3>4. Maxim și minim – păstrezi cel mai bun candidat</h3>
+<pre><code>int maxim = v[0]; // pornești de la un element real
+for (int i = 1; i < n; i++) {
+    if (v[i] > maxim) {
+        maxim = v[i];
+    }
+}</code></pre>
+<p>De ce nu pornești obligatoriu cu 0? Pentru că tabloul poate conține doar numere negative. Inițializarea cu <code>v[0]</code> garantează că maximul inițial este o valoare din date. Ai nevoie ca <code>n &gt; 0</code>.</p>
+<h3>5. Căutare – verifici dacă există o valoare</h3>
+<pre><code>bool gasit = false;
+for (int i = 0; i < n; i++) {
+    if (v[i] == x) {
+        gasit = true;
+    }
+}
+if (gasit)
+    cout << "Exista";
+else
+    cout << "Nu exista";</code></pre>
+<p><code>bool</code> poate avea doar valorile <code>true</code> sau <code>false</code>. Variabila este un indicator: inițial presupui că nu ai găsit, apoi o schimbi când întâlnești valoarea.</p>
+<h3>6. Filtrare – prelucrezi doar elementele care trec testul</h3>
+<pre><code>for (int i = 0; i < n; i++) {
+    if (v[i] > 0) {
+        cout << v[i] << " ";
+    }
+}</code></pre>
+<p>Filtrarea nu modifică neapărat tabloul; în exemplu doar afișează valorile pozitive.</p>
+<h3>7. Actualizare – modifici elementul curent</h3>
+<pre><code>for (int i = 0; i < n; i++) {
+    if (v[i] < 0) {
+        v[i] = 0;
+    }
+}</code></pre>
+<p>Aici nu doar citești elementele, ci le și schimbi. Fă diferența între o parcurgere de analiză și una de actualizare.</p>
+<table><tr><th>Cuvânt-cheie în cerință</th><th>Tipar probabil</th></tr><tr><td>„calculați totalul”, „suma”</td><td>acumulator</td></tr><tr><td>„câte”, „numărul de”</td><td>contor + <code>if</code></td></tr><tr><td>„cel mai mare/mic”</td><td>maxim/minim</td></tr><tr><td>„există?”, „se găsește?”</td><td>indicator boolean</td></tr><tr><td>„afișați doar...”</td><td>filtrare</td></tr><tr><td>„înlocuiți”, „actualizați”</td><td>modificare în tablou</td></tr></table>
+<div class="note"><b>Capcana inițializării:</b> suma și contorul pornesc de la 0; indicatorul pornește de regulă de la <code>false</code>; maximul/minimul pornește dintr-un element al tabloului. Inițializarea depinde de ce calculezi.</div>
+<label><input type="checkbox" class="lesson" onchange="updateProgress()"> Pot recunoaște și adapta tiparele de bază</label></section>
+
+<section class="card" id="math"><h2>7. Operatorii / și %</h2><table><tr><th>Expresie</th><th>Rezultat</th><th>Explicație</th></tr><tr><td>23 / 5</td><td>4</td><td>cât întreg</td></tr><tr><td>23 % 5</td><td>3</td><td>rest</td></tr><tr><td>20 % 5</td><td>0</td><td>împărțire exactă</td></tr></table>
+<p>Cu operanzi întregi, împărțirea este întreagă: <code>7 / 2</code> produce 3. Operatorul <code>%</code> este util la verificarea parității, cifrelor și împărțirii în grupe.</p>
+<div class="exercise"><b>Verificare:</b> cât este <code>31 % 6</code>? <input id="modAnswer" type="number" placeholder="rest"><button onclick="checkNumber('modAnswer',1,'modFeedback','Corect: 6*5=30, rămâne 1.')">Verifică</button><div id="modFeedback" class="status"></div></div>
+<label><input type="checkbox" class="lesson" onchange="updateProgress()"> Am înțeles / și %</label></section>
+
+<section class="card" id="greedy"><h2>8. Strategia greedy</h2>
+<p><b>Greedy</b> (algoritm lacom) construiește o soluție pas cu pas. La fiecare pas alege varianta care pare cea mai avantajoasă în acel moment, respectând restricțiile problemei. În mod obișnuit nu revine să schimbe alegerile deja făcute.</p>
+<h3>Ideea în 4 pași</h3>
+<ol><li><b>Stabilești ordinea alegerilor.</b> În problema restului, încerci valorile nominale descrescător: de la cea mai mare la cea mai mică.</li><li><b>Calculezi cât ai putea folosi.</b> Te uiți la câtul dintre suma rămasă și valoarea curentă.</li><li><b>Respecți limitele.</b> Dacă există stoc, nu poți folosi mai multe unități decât ai disponibile.</li><li><b>Actualizezi restul.</b> Scazi valoarea totală folosită și treci la următoarea categorie.</li></ol>
+<svg class="diagram" viewBox="0 0 720 150" role="img" aria-label="Pașii algoritmului greedy"><g font-size="14" text-anchor="middle"><rect x="15" y="45" width="150" height="55" rx="9" fill="#315ee8"/><text x="90" y="68" fill="white">Alege</text><text x="90" y="87" fill="white">opțiunea locală</text><path d="M165 72 H195" stroke="currentColor" stroke-width="2"/><path d="M188 65 L198 72 L188 79" fill="none" stroke="currentColor" stroke-width="2"/><rect x="200" y="45" width="150" height="55" rx="9" fill="#315ee8"/><text x="275" y="68" fill="white">Verifică</text><text x="275" y="87" fill="white">restricțiile</text><path d="M350 72 H380" stroke="currentColor" stroke-width="2"/><path d="M373 65 L383 72 L373 79" fill="none" stroke="currentColor" stroke-width="2"/><rect x="385" y="45" width="145" height="55" rx="9" fill="#315ee8"/><text x="457" y="68" fill="white">Actualizează</text><text x="457" y="87" fill="white">ce a rămas</text><path d="M530 72 H560" stroke="currentColor" stroke-width="2"/><path d="M553 65 L563 72 L553 79" fill="none" stroke="currentColor" stroke-width="2"/><rect x="565" y="45" width="140" height="55" rx="9" fill="#11845b"/><text x="635" y="68" fill="white">Treci la</text><text x="635" y="87" fill="white">următorul pas</text></g></svg>
+<h3>Ce calculezi la o categorie?</h3>
+<p>Presupunem că:</p>
+<ul><li><code>rest</code> = suma care încă trebuie formată;</li><li><code>valoare[i]</code> = valoarea unei bancnote/monede;</li><li><code>stoc[i]</code> = câte unități sunt disponibile.</li></ul>
+<p>Fără limită de stoc, numărul maxim posibil la pasul curent este câtul întreg <code>rest / valoare[i]</code>. Cu stoc limitat, alegerea trebuie să respecte simultan ambele limite:</p>
+<pre><code>posibil_din_suma = rest / valoare[i]
+posibil_din_stoc = stoc[i]
+
+// cantitatea aleasă nu poate depăși niciuna dintre limite</code></pre>
+<p>După alegere, calculezi contribuția categoriei: <code>cantitate_aleasa * valoare[i]</code>. Apoi scazi această contribuție din <code>rest</code>. Nu scazi doar numărul de bancnote; scazi valoarea lor totală.</p>
+<h3>Exemplu urmărit manual</h3>
+<p>Ai valori 10, 4 și 1 și trebuie să formezi 27. Alegi 2 unități de 10 (contribuție 20, rest 7), apoi 1 unitate de 4 (contribuție 4, rest 3), apoi 3 unități de 1 (contribuție 3, rest 0).</p>
+<table><tr><th>Valoare</th><th>Rest înainte</th><th>Cantitate aleasă</th><th>Contribuție</th><th>Rest după</th></tr><tr><td>10</td><td>27</td><td>2</td><td>20</td><td>7</td></tr><tr><td>4</td><td>7</td><td>1</td><td>4</td><td>3</td></tr><tr><td>1</td><td>3</td><td>3</td><td>3</td><td>0</td></tr></table>
+<h3>Greedy nu înseamnă „aleg la întâmplare cea mai mare”</h3>
+<p>Regula trebuie să fie justificată de problemă. Pentru unele sisteme de valori, alegerea descrescătoare produce o soluție optimă; pentru alte seturi arbitrare, poate produce o soluție neoptimă sau poate să nu găsească o soluție, deși există una prin altă combinație.</p>
+<div class="warning"><b>De reținut la examen:</b> greedy descrie strategia de alegere, nu rezolvă automat toate restricțiile. Trebuie să verifici și stocul, și suma rămasă, și dacă soluția este completă.</div>
+<label><input type="checkbox" class="lesson" onchange="updateProgress()"> Am înțeles ideea greedy și calculele sale</label></section>
+
+<section class="card" id="transactions"><h2>9. Stoc, cereri și actualizare sigură</h2>
+<p>În această problemă, stocul reprezintă resursele disponibile în acel moment. O cerere este o operație nouă care poate consuma o parte din stoc. Ideea esențială este să nu strici datele inițiale dacă descoperi abia la final că cererea nu poate fi satisfăcută.</p>
+<h3>Ține separat cele trei tipuri de informații</h3>
+<table><tr><th>Variabilă / structură</th><th>Ce reprezintă</th><th>Când se modifică?</th></tr><tr><td><code>stoc[i]</code></td><td>Resursa reală disponibilă la categoria <code>i</code></td><td>Numai după o cerere acceptată</td></tr><tr><td><code>folosit[i]</code> / tablou temporar</td><td>Cantitatea propusă pentru cererea curentă</td><td>În timpul calculului cererii</td></tr><tr><td><code>total[i]</code></td><td>Cât s-a folosit cumulat în cererile reușite</td><td>După acceptarea unei cereri</td></tr></table>
+<p>Nu confunda <b>stocul rămas</b> cu <b>totalul folosit</b>. Dacă ai pornit cu 12 obiecte și ai livrat 3, apoi 4, stocul rămas este 5, iar totalul livrat este 7.</p>
+<h3>De ce este periculos să modifici stocul imediat?</h3>
+<p>Imaginează-ți că începi să formezi o cerere și scazi din stoc după fiecare alegere. La final descoperi că suma nu poate fi formată complet. Dacă afișezi „cerere imposibilă”, dar ai scăzut deja câteva bancnote din stoc, datele au devenit incorecte. Următoarea cerere va porni de la un stoc fals.</p>
+<div class="warning"><b>Exemplu de eroare logică:</b> cererea consumă temporar 2 bancnote dintr-o categorie, apoi algoritmul constată că restul nu poate fi acoperit. Dacă stocul real a fost deja micșorat, ai pierdut acele 2 bancnote chiar dacă operația a eșuat.</div>
+<h3>Metoda sigură: propunere, verificare, confirmare</h3>
+<ol><li><b>Propunere:</b> creezi un tablou temporar pentru cantitățile pe care ai vrea să le folosești. Stocul real rămâne neatins.</li><li><b>Verificare:</b> parcurgi categoriile și calculezi dacă poți acoperi toată cererea. Urmărești suma rămasă.</li><li><b>Decizie:</b> dacă la final restul este diferit de 0, cererea eșuează. Nu transferi nimic din propunere în stoc.</li><li><b>Confirmare:</b> doar dacă restul este 0, scazi cantitățile propuse din stocul real și le adaugi la totalurile folosite.</li></ol>
+<pre><code>// Schemă conceptuală – nu este soluția completă a subiectului
+int propus[7] = {0};
+
+// 1. Calculezi în propus[], fără să modifici stoc[].
+// 2. Verifici dacă cererea a fost acoperită integral.
+
+if (cerere_acoperita) {
+    // 3. Confirmi: actualizezi stocul real și totalurile.
+} else {
+    // 4. Respingi: stocul real rămâne neschimbat.
+}</code></pre>
+<h3>Invariantă: regula care trebuie să rămână adevărată</h3>
+<p>După fiecare cerere procesată, pentru fiecare categorie trebuie să fie adevărat că:</p>
+<ul><li>stocul rămas nu este negativ;</li><li>stocul rămas + cantitatea consumată = stocul inițial;</li><li>totalurile cresc numai pentru cererile acceptate;</li><li>o cerere respinsă nu schimbă stocul și totalurile.</li></ul>
+<p>Aceste reguli se numesc <b>invariante</b>: condiții care trebuie să rămână adevărate pe parcursul programului. Sunt foarte utile pentru a verifica dacă algoritmul este corect.</p>
+<h3>Exemplu cu două cereri</h3>
+<p>La început ai 5 unități în stoc. Prima cerere folosește 2 și este acceptată: stocul devine 3, totalul folosit devine 2. A doua cerere ar necesita 4, dar ai doar 3. A doua cerere este respinsă: stocul rămâne 3, iar totalul folosit rămâne 2.</p>
+<table><tr><th>Moment</th><th>Stoc</th><th>Total folosit</th><th>Observație</th></tr><tr><td>Inițial</td><td>5</td><td>0</td><td>Nu s-a procesat nimic</td></tr><tr><td>După cererea 1</td><td>3</td><td>2</td><td>Acceptată</td></tr><tr><td>După cererea 2</td><td>3</td><td>2</td><td>Respinsă, fără modificări</td></tr></table>
+<h3>Ordinea validării unei cereri</h3>
+<ol><li>Citești valoarea cererii.</li><li>Dacă este 0, oprești procesarea – este valoarea de terminare.</li><li>Dacă este negativă, afișezi mesaj de eroare și treci la următoarea cerere.</li><li>Dacă este pozitivă, calculezi propunerea folosind stocul disponibil.</li><li>Dacă nu poți acoperi integral cererea, o respingi fără actualizări.</li><li>Dacă o poți acoperi, confirmi actualizarea stocului și a totalurilor.</li></ol>
+<div class="note"><b>Ideea de memorat:</b> întâi simulezi tranzacția, apoi o confirmi. Este aceeași idee folosită în multe programe reale: o operație trebuie să fie complet validă înainte să schimbe datele permanente.</div>
+<label><input type="checkbox" class="lesson" onchange="updateProgress()"> Pot explica de ce folosesc un tablou temporar și când actualizez stocul</label></section>
+
+<section class="card" id="complexity"><h2>10. Complexitate – cât de eficient este algoritmul?</h2><table><tr><th>Notație</th><th>Idee</th><th>Exemplu</th></tr><tr><td>O(1)</td><td>timp constant</td><td>acces la v[2]</td></tr><tr><td>O(n)</td><td>o parcurgere</td><td>sumă într-un vector</td></tr><tr><td>O(n²)</td><td>două bucle imbricate</td><td>compararea tuturor perechilor</td></tr></table>
+<p>Dacă parcurgi un tablou fix de 7 elemente pentru fiecare cerere, fiecare cerere are un număr mic și limitat de pași.</p></section>
+
+
+<section class="card" id="deep-theory"><h2>Teorie aprofundată – înțelege ce calculezi și de ce</h2>
+<p>Această parte completează lecțiile de bază fără să schimbe exercițiile, testele sau compilatorul. Scopul este să înțelegi raționamentul din spatele fiecărei instrucțiuni, nu doar să recunoști sintaxa.</p>
+
+<h3>11.1. Cum se execută un program C++</h3>
+<p>Un program C++ este executat în ordine, de sus în jos, începând cu funcția <code>main()</code>. Instrucțiunile dintr-un bloc delimitat de acolade se execută atunci când fluxul ajunge la acel bloc. O condiție poate sări peste un bloc, iar o buclă poate relua un bloc de mai multe ori.</p>
+<pre><code>int x = 4;       // 1. se creează x și primește valoarea 4
+x = x + 3;       // 2. se calculează 4 + 3, apoi x devine 7
+cout << x;       // 3. se afișează 7</code></pre>
+<p>În expresia <code>x = x + 3</code>, partea din dreapta se calculează prima. Rezultatul este apoi atribuit variabilei din stânga. Semnul egal din programare nu este o ecuație matematică; el înseamnă „pune în variabila din stânga rezultatul din dreapta”.</p>
+<div class="note"><b>Metodă de urmărire:</b> citește codul linie cu linie și notează valorile variabilelor după fiecare instrucțiune. Această tehnică se numește urmărire manuală sau dry run.</div>
+
+<h3>11.2. Operații aritmetice și ordinea calculelor</h3>
+<table><tr><th>Operator</th><th>Operație</th><th>Exemplu</th></tr>
+<tr><td><code>+</code></td><td>adunare</td><td><code>8 + 3 = 11</code></td></tr>
+<tr><td><code>-</code></td><td>scădere</td><td><code>8 - 3 = 5</code></td></tr>
+<tr><td><code>*</code></td><td>înmulțire</td><td><code>8 * 3 = 24</code></td></tr>
+<tr><td><code>/</code></td><td>împărțire</td><td><code>8 / 3 = 2</code> dacă ambii operanzi sunt int</td></tr>
+<tr><td><code>%</code></td><td>restul împărțirii întregi</td><td><code>8 % 3 = 2</code></td></tr>
+</table>
+<p>Ordinea uzuală este: paranteze, apoi înmulțire/împărțire/rest, apoi adunare/scădere. La același nivel, operațiile se evaluează în general de la stânga la dreapta.</p>
+<pre><code>int rezultat = 10 + 6 * 2;     // 22, nu 32
+int rezultat2 = (10 + 6) * 2; // 32</code></pre>
+<p>Parantezele sunt utile nu doar pentru a schimba ordinea, ci și pentru a face formulele mai ușor de citit.</p>
+<div class="exercise"><b>Verifică ordinea operațiilor:</b> cât valorează <code>18 - 2 * 5</code>? <input id="deepMath" type="number" placeholder="rezultat"><button onclick="checkNumber('deepMath',8,'deepMathFeedback','Corect: întâi 2*5=10, apoi 18-10=8.')">Verifică</button><div id="deepMathFeedback" class="status"></div></div>
+
+<h3>11.3. Ce înseamnă câtul și restul – explicație pas cu pas</h3>
+<p>Pentru două numere întregi pozitive <code>a</code> și <code>b</code>, există relația:</p>
+<pre><code>a = (a / b) * b + (a % b)</code></pre>
+<p>De exemplu, pentru <code>a = 29</code> și <code>b = 6</code>:</p>
+<ul><li>6 încape de 4 ori complet în 29;</li><li>4 × 6 = 24;</li><li>29 − 24 = 5;</li><li>deci <code>29 / 6</code> este 4, iar <code>29 % 6</code> este 5.</li></ul>
+<p>Restul este întotdeauna mai mic decât împărțitorul pentru numere pozitive. Dacă restul este 0, împărțirea este exactă.</p>
+<h3>La ce te ajută % în probleme?</h3>
+<ul><li>Paritate: <code>n % 2 == 0</code> înseamnă număr par.</li><li>Ultima cifră a unui număr pozitiv: <code>n % 10</code>.</li><li>Eliminarea ultimei cifre: <code>n / 10</code> pentru int pozitiv.</li><li>Verificarea divizibilității: <code>n % d == 0</code>, cu condiția ca <code>d</code> să nu fie 0.</li></ul>
+<div class="warning">Nu împărți niciodată la zero. Expresiile <code>a / 0</code> și <code>a % 0</code> nu sunt valide.</div>
+
+<h3>11.4. Incrementare, decrementare și atribuiri prescurtate</h3>
+<table><tr><th>Formă</th><th>Înseamnă</th></tr><tr><td><code>x++</code></td><td>crește x cu 1</td></tr><tr><td><code>x--</code></td><td>scade x cu 1</td></tr><tr><td><code>x += 5</code></td><td>adaugă 5 la x</td></tr><tr><td><code>x -= 5</code></td><td>scade 5 din x</td></tr><tr><td><code>x *= 2</code></td><td>înmulțește x cu 2</td></tr></table>
+<p>De exemplu, dacă <code>x</code> este 10, după <code>x += 4</code> devine 14. Este echivalent cu <code>x = x + 4</code>. În probleme, aceste forme apar frecvent la contoare, sume și actualizarea stocurilor.</p>
+
+<h3>11.5. Cum alegi bucla potrivită</h3>
+<div class="grid"><div class="tile"><b>for</b><p>Folosește-l când ai un număr cunoscut de pași: citești 7 cantități, parcurgi 10 elemente, verifici toate pozițiile unui tablou.</p></div><div class="tile"><b>while</b><p>Folosește-l când repetarea depinde de o condiție și nu știi dinainte câte iterații vor exista: citești comenzi până la 0.</p></div></div>
+<p>O buclă <code>for</code> are de obicei o variabilă de control. Începi cu un index, verifici dacă este încă în interval, execuți corpul și modifici indexul. O buclă <code>while</code> depinde de o condiție care trebuie să se poată schimba în corpul buclei sau printr-o instrucțiune apelată de acolo.</p>
+<h3>Urmărirea unei bucle for</h3>
+<pre><code>for (int i = 0; i < 3; i++) {
+    cout << i << " ";
+}</code></pre>
+<table><tr><th>Iterație</th><th>Valoarea lui i la test</th><th>Se execută corpul?</th><th>După i++</th></tr>
+<tr><td>1</td><td>0</td><td>da, afișează 0</td><td>1</td></tr><tr><td>2</td><td>1</td><td>da, afișează 1</td><td>2</td></tr><tr><td>3</td><td>2</td><td>da, afișează 2</td><td>3</td></tr><tr><td>test final</td><td>3</td><td>nu, deoarece 3&lt;3 este fals</td><td>bucla se încheie</td></tr></table>
+<p>Outputul este <code>0 1 2</code>. Observă că valoarea 3 nu intră în corpul buclei.</p>
+<div class="warning"><b>Buclă infinită:</b> dacă în <code>while (x != 0)</code> nu modifici niciodată <code>x</code> și nici nu citești o valoare nouă, condiția poate rămâne mereu adevărată. Gândește-te mereu ce anume face condiția să devină falsă.</div>
+
+<h3>11.6. Tablourile – memorie, index și legătura dintre poziții</h3>
+<p>Un tablou de dimensiune <code>N</code> rezervă spațiu pentru exact <code>N</code> elemente de același tip. Numele tabloului identifică zona de memorie, iar indexul selectează un element.</p>
+<pre><code>int note[4] = {8, 9, 10, 7};
+cout << note[0]; // primul element: 8
+cout << note[3]; // ultimul element: 7</code></pre>
+<p>De ce începe indexul de la 0? Indexul reprezintă distanța față de primul element: primul este la distanța 0, al doilea la distanța 1 și așa mai departe. De aceea, pentru N elemente, ultimul index este N−1.</p>
+<h3>Ce înseamnă depășirea limitelor?</h3>
+<p>Dacă ai <code>int v[4]</code>, pozițiile valide sunt 0, 1, 2 și 3. Accesarea lui <code>v[4]</code> este în afara tabloului. C++ nu garantează un mesaj de eroare; programul poate afișa valori imprevizibile sau se poate comporta incorect. Verifică întotdeauna limitele.</p>
+<h3>Două tablouri sincronizate</h3>
+<p>Imaginează-ți că ai un tablou cu denumiri de produse și altul cu stocurile. Poziția 0 din primul tablou trebuie să descrie aceeași categorie ca poziția 0 din al doilea. Dacă sortezi sau modifici ordinea unui tablou fără să păstrezi asocierea, datele nu mai corespund.</p>
+<div class="note"><b>Regulă practică:</b> când două tablouri descriu aceeași listă de categorii, parcurge-le cu același index <code>i</code>. <code>denominatii[i]</code>, <code>stoc[i]</code> și <code>totalOferit[i]</code> se referă toate la categoria de pe poziția i.</div>
+
+<h3>11.7. Tipare de calcul pe tablouri – cum gândești inițializarea</h3>
+<p><b>Sumă:</b> începi cu 0 pentru că încă nu ai adunat nimic. Apoi adaugi fiecare element.</p>
+<pre><code>int suma = 0;
+for (int i = 0; i < n; i++)
+    suma = suma + v[i];</code></pre>
+<p><b>Contor:</b> începi cu 0 pentru că încă nu ai numărat nicio apariție. Crești contorul doar când condiția este adevărată.</p>
+<pre><code>int cnt = 0;
+for (int i = 0; i < n; i++)
+    if (v[i] > 0) cnt++;</code></pre>
+<p><b>Maxim:</b> inițializezi cu primul element, nu cu 0, deoarece toate valorile ar putea fi negative. Apoi înlocuiești maximul când găsești ceva mai mare.</p>
+<pre><code>int maxim = v[0];
+for (int i = 1; i < n; i++)
+    if (v[i] > maxim) maxim = v[i];</code></pre>
+<p><b>Indicator boolean:</b> pornești cu <code>false</code> pentru „încă nu am găsit”. Când găsești elementul căutat, îl setezi la <code>true</code>.</p>
+<div class="warning">În tiparul pentru maxim, tabloul trebuie să aibă cel puțin un element. Dacă n poate fi 0, trebuie tratat separat înainte de a accesa <code>v[0]</code>.</div>
+
+<h3>11.8. Greedy în profunzime – ce calculezi la fiecare pas</h3>
+<p>Un algoritm greedy construiește soluția treptat. La fiecare pas:</p>
+<ol><li>Identifici opțiunea curentă, de exemplu valoarea de pe poziția <code>i</code>.</li><li>Calculezi limita impusă de ținta rămasă.</li><li>Calculezi limita impusă de resursele disponibile.</li><li>Alegi cantitatea care respectă ambele limite.</li><li>Calculezi contribuția acestei alegeri la suma formată.</li><li>Scazi contribuția din ținta rămasă și treci la următoarea opțiune.</li></ol>
+<p>Într-o problemă de formare a unei sume, dacă valoarea curentă este <code>d</code>, ținta rămasă este <code>R</code>, iar stocul este <code>S</code>, cantitatea aleasă nu poate fi mai mare decât <code>R / d</code> și nici decât <code>S</code>. De aceea apare ideea de minim dintre cele două limite.</p>
+<pre><code>limita_din_suma = R / d;
+limita_din_stoc = S;
+cantitate_aleasa = minimul celor doua;
+valoare_acoperita = cantitate_aleasa * d;
+R = R - valoare_acoperita;</code></pre>
+<p>Acestea sunt relațiile matematice ale pasului greedy, nu rezolvarea completă a simulării. După ce parcurgi toate valorile, dacă <code>R</code> este 0, ținta a fost formată. Dacă este pozitiv, nu ai reușit să o formezi cu resursele disponibile.</p>
+<div class="note"><b>Întrebare de control:</b> de ce nu alegi mai multe unități decât <code>R / d</code>? Pentru că ai depăși suma rămasă. De ce nu alegi mai multe decât stocul? Pentru că ai folosi resurse care nu există.</div>
+
+<h3>11.9. De ce trebuie calculată întâi o propunere temporară?</h3>
+<p>Gândește cererea ca pe o tranzacție. O tranzacție are două rezultate posibile: confirmată sau anulată. Dacă actualizezi stocul real în timp ce încă verifici dacă poți forma suma, o cerere imposibilă poate consuma parțial resurse.</p>
+<div class="grid"><div class="tile"><b>Varianta riscantă</b><p>Scazi imediat din stoc pentru fiecare categorie. La final descoperi că nu ajunge. Acum trebuie să refaci toate scăderile și riști să uiți una.</p></div><div class="tile"><b>Varianta sigură</b><p>Calculezi într-un tablou temporar. Dacă reușești, aplici toate scăderile. Dacă nu, ignori propunerea temporară și stocul rămâne intact.</p></div></div>
+<p>Separarea calculului de confirmare face programul mai ușor de verificat și reduce erorile logice. Este o idee folosită și în aplicații reale, nu doar în exerciții de facultate.</p>
+
+<h3>11.10. Testarea – cum găsești erori înainte de profesor</h3>
+<p>Nu testa doar un exemplu obișnuit. Construiește teste care verifică fiecare ramură a programului.</p>
+<table><tr><th>Tip de test</th><th>Ce verifici</th></tr>
+<tr><td>Normal</td><td>o cerere validă, acoperită exact</td></tr>
+<tr><td>Limită minimă</td><td>o cerere mică sau stoc zero la o categorie</td></tr>
+<tr><td>Limită maximă</td><td>o cerere mare și cantități mari în stoc</td></tr>
+<tr><td>Invalid</td><td>valoare negativă</td></tr>
+<tr><td>Resurse insuficiente</td><td>cerere care nu poate fi acoperită integral</td></tr>
+<tr><td>Repetare</td><td>două cereri care folosesc aceeași categorie</td></tr>
+<tr><td>Oprire imediată</td><td>prima valoare citită este 0</td></tr></table>
+<p>După fiecare test, verifică nu doar mesajul afișat, ci și starea internă: stocul, totalurile și valoarea rămasă. Uneori outputul pare corect, dar datele au fost modificate greșit pentru următoarea cerere.</p>
+
+<h3>11.11. Erori de compilare versus erori logice</h3>
+<div class="grid"><div class="tile"><b>Eroare de sintaxă / compilare</b><p>Compilatorul nu poate transforma codul într-un program executabil. Exemple: punct și virgulă lipsă, acolade neînchise, variabilă nedeclarată, paranteze greșite.</p></div><div class="tile"><b>Eroare logică</b><p>Programul compilează și rulează, dar rezultatul este greșit. Exemple: folosești <code>i &lt;= n</code> în loc de <code>i &lt; n</code>, modifici stocul prea devreme sau uiți să resetezi o variabilă pentru cererea următoare.</p></div></div>
+<p>Compilatorul te ajută să găsești erorile de sintaxă. Testele și urmărirea manuală te ajută să găsești erorile logice.</p>
+
+<h3>11.12. Metoda de depanare: urmărește variabilele</h3>
+<p>Când rezultatul nu este cel așteptat, alege un exemplu mic și notează valorile după fiecare pas. Pentru o buclă, notează indexul, condiția, valoarea curentă și variabila modificată.</p>
+<table><tr><th>Pas</th><th>i</th><th>v[i]</th><th>suma înainte</th><th>suma după</th></tr><tr><td>1</td><td>0</td><td>3</td><td>0</td><td>3</td></tr><tr><td>2</td><td>1</td><td>5</td><td>3</td><td>8</td></tr><tr><td>3</td><td>2</td><td>2</td><td>8</td><td>10</td></tr></table>
+<p>Acest tabel de urmărire îți arată concret cum evoluează o variabilă. Folosește aceeași metodă pentru tablourile de stoc și totaluri.</p>
+</section>
+
+<section class="card" id="worked"><h2>11. Exemple C++ care se pot compila</h2><p>Exemplul de mai jos citește 5 numere, calculează suma și numără valorile pare. Apasă „Trimite în compilator” pentru a-l încărca în editor.</p>
+<pre><code>#include &lt;iostream&gt;
+using namespace std;
+int main() {
+    int v[5], suma = 0, pare = 0;
+    for (int i = 0; i &lt; 5; i++) {
+        cin &gt;&gt; v[i];
+        suma += v[i];
+        if (v[i] % 2 == 0) pare++;
+    }
+    cout &lt;&lt; "Suma = " &lt;&lt; suma &lt;&lt; '\\n';
+    cout &lt;&lt; "Pare = " &lt;&lt; pare &lt;&lt; '\\n';
+    return 0;
+}</code></pre>
+<button onclick="loadExample()">Încarcă exemplul în compilator</button>
+<p class="small">Intrare de test pentru exemplu: <code>2 5 8 1 4</code>. Rezultatul așteptat: suma 20, numere pare 3.</p></section>
+
+<section class="card" id="practice"><h2>12. Exerciții interactive – verifică dacă ai înțeles</h2>
+<p>Rezolvă fiecare exercițiu. Sistemul verifică răspunsul și îți oferă explicații.</p>
+<div class="exercise"><b>Exercițiul 1 – condiție</b><p>Completează expresia care verifică dacă <code>n</code> este între 1 și 100 inclusiv.</p><input id="ex1" type="text" placeholder="n >= 1 && n <= 100"><button onclick="checkText('ex1',['n >= 1 && n <= 100','n<=100 && n>=1','1 <= n && n <= 100'],'ex1f','Corect! Ambele limite sunt incluse, de aceea folosim <= și >=.')">Verifică</button><div id="ex1f" class="status"></div></div>
+<div class="exercise"><b>Exercițiul 2 – buclă</b><p>Completează condiția astfel încât bucla să ruleze pentru indicii 0, 1, 2, 3, 4, 5.</p><code>for (int i = 0; i ___ 6; i++)</code><input id="ex2" type="text" placeholder="<"><button onclick="checkText('ex2',['<'],'ex2f','Corect: i < 6 produce indicii de la 0 la 5.')">Verifică</button><div id="ex2f" class="status"></div></div>
+<div class="exercise"><b>Exercițiul 3 – tablouri</b><p>Ai <code>int a[8]</code>. Câte elemente are și care este ultimul index?</p><p>Număr elemente: <input id="ex3a" type="number" style="width:85px"> Ultimul index: <input id="ex3b" type="number" style="width:85px"> <button onclick="checkPair()">Verifică</button></p><div id="ex3f" class="status"></div></div>
+<div class="exercise"><b>Exercițiul 4 – operator %</b><p>Ce valoare are <code>47 % 10</code>?</p><input id="ex4" type="number" placeholder="rest"><button onclick="checkNumber('ex4',7,'ex4f','Corect! 10 intră de 4 ori în 47, iar restul este 7.')">Verifică</button><div id="ex4f" class="status"></div></div>
+<div class="exercise"><b>Exercițiul 5 – logică de algoritm</b><p>Ai calculat cantitățile pentru o cerere, dar descoperi că stocul nu ajunge. Ce faci?</p><select id="ex5"><option value="">Alege răspunsul…</option><option value="a">Păstrez scăderile făcute până acum</option><option value="b">Anulez cererea și nu modific stocul real</option><option value="c">Scad doar ultima categorie</option></select><button onclick="checkSelect('ex5','b','ex5f','Exact! Cererea trebuie tratată ca o tranzacție: ori se realizează integral, ori nu schimbă stocul.')">Verifică</button><div id="ex5f" class="status"></div></div>
+<div class="exercise"><b>Exercițiul 6 – scrie un mic program</b><p>Scrie în compilator un program care citește un număr <code>n</code> și afișează „PAR” dacă este par, altfel „IMPAR”. Apoi apasă Compilează și rulează.</p><button class="secondary" onclick="loadParity()">Încarcă scheletul programului</button></div>
+</section>
+
+<section class="card" id="quiz"><h2>13. Test rapid – 5 întrebări</h2><p>Alege răspunsurile și apasă „Corectează testul”.</p>
+<div id="quizQuestions"></div><button onclick="gradeQuiz()">Corectează testul</button><div id="quizResult" class="status"></div></section>
+
+<section class="card" id="compiler"><h2>14. Compilator C++ online</h2>
+<p>Scrie sau lipește programul C++. Introdu datele de intrare în caseta stdin, apoi compilează și rulează. Este folosit GCC prin Wandbox.</p>
+<textarea id="cppCode" spellcheck="false">#include <iostream>
+using namespace std;
+
+int main() {
+    int a, b;
+    cin >> a >> b;
+    cout << "Suma = " << a + b << '\n';
+    return 0;
+}</textarea>
+<div class="grid" style="margin-top:10px"><div><b>Intrare (stdin)</b><textarea id="stdin" style="min-height:90px">7 5</textarea></div><div><b>Rezultat</b><div class="output" id="compileOutput">Aici va apărea rezultatul compilării.</div></div></div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px"><button id="runBtn" onclick="compileCpp()">⚙ Compilează și rulează</button><button class="secondary" onclick="document.getElementById('cppCode').value='';document.getElementById('compileOutput').textContent='Editor gol.'">Șterge codul</button></div>
+<div class="small" id="compileStatus">Necesită conexiune la internet. Dacă nu funcționează, verifică dacă browserul permite cererile către wandbox.org.</div>
+</section>
+
+<section class="card" id="videos"><h2>15. Video și resurse pentru aprofundare</h2>
+<p>Am pus linkuri către căutări tematice, ca să poți alege explicația video care ți se potrivește. Căutările se deschid pe YouTube.</p>
+<a class="video" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=C%2B%2B+romana+tablouri+unidimensionale+explicatii"><span class="play">▶️</span><span><b>Tablouri unidimensionale în C++</b><br><span class="small">Declarare, citire, parcurgere și afișare</span></span></a>
+<a class="video" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=C%2B%2B+romana+while+for+do+while+explicat"><span class="play">▶️</span><span><b>Bucle for, while și do-while</b><br><span class="small">Când alegi fiecare structură repetitivă</span></span></a>
+<a class="video" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=C%2B%2B+algoritmi+greedy+explicati+romana"><span class="play">▶️</span><span><b>Algoritmi greedy</b><br><span class="small">Strategie, exemple și limite</span></span></a>
+<a class="video" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=C%2B%2B+operator+modulo+impartire+intreaga"><span class="play">▶️</span><span><b>Împărțire întreagă și modulo</b><br><span class="small">Operatorii / și % cu exemple</span></span></a>
+<h3>Documentație utilă</h3><p><a href="https://en.cppreference.com/w/cpp/language" target="_blank" rel="noopener">cppreference – limbajul C++</a> · <a href="https://www.learncpp.com/" target="_blank" rel="noopener">LearnCpp – lecții structurate</a></p>
+</section>
+
+<section class="card" id="exam"><h2>16. Plan de atac pentru simularea profesorului</h2>
+<ol><li>Definește tabloul constant al denominațiilor, în ordinea cerută.</li><li>Citește stocul într-un al doilea tablou, păstrând aceeași poziție pentru aceeași categorie.</li><li>Pregătește tabloul totalurilor oferite.</li><li>Citește cereri repetate până la 0; tratează negativul separat.</li><li>Pentru fiecare cerere, calculează cantitățile propuse într-un tablou temporar.</li><li>Verifică dacă suma a fost acoperită complet.</li><li>Doar la succes actualizează stocul și totalurile oferite.</li><li>La final afișează fiecare denominație, totalul oferit și stocul rămas.</li></ol>
+<div class="warning"><b>Nu copia o rezolvare gata făcută.</b> Profesorul poate schimba valorile, numărul de categorii sau condițiile. Dacă stăpânești tiparele de mai sus, vei putea adapta algoritmul.</div>
+<h3>Checklist înainte de predare</h3><ul><li>Nu accesez niciodată un index în afara tabloului.</li><li>0 oprește programul și nu este procesat ca rest.</li><li>Negativul afișează eroare și citirea continuă.</li><li>O cerere imposibilă nu modifică stocul.</li><li>Totalurile se modifică doar pentru cereri reușite.</li><li>Raportul final include toate denominațiile.</li><li>Am testat și cazul fără nicio cerere.</li></ul>
+</section>
+</div></div></main>
+<footer>Creat pentru studiu activ • Fă exercițiile, rulează codul și explică fiecare pas.</footer>
+<script>
+function toggleTheme(){const d=document.documentElement;const dark=d.getAttribute('data-theme')==='dark';d.setAttribute('data-theme',dark?'light':'dark');document.getElementById('themeBtn').textContent=dark?'🌙 Tema întunecată':'☀️ Tema luminoasă';}
+function checkSelect(id,correct,out,msg){const v=document.getElementById(id).value;document.getElementById(out).innerHTML=v===correct?'<span class="ok">Corect!</span> '+msg:'<span class="err">Mai încearcă.</span> Recitește explicația și gândește-te la cerință.';}
+function checkText(id,answers,out,msg){const v=document.getElementById(id).value.trim().replace(/\s+/g,' ').toLowerCase();const ok=answers.some(a=>a.toLowerCase()===v);document.getElementById(out).innerHTML=ok?'<span class="ok">Corect!</span> '+msg:'<span class="err">Nu chiar.</span> Verifică operatorii și parantezele.';}
+function checkNumber(id,n,out,msg){const v=document.getElementById(id).value;document.getElementById(out).innerHTML=Number(v)===n&&v!==''?'<span class="ok">Corect!</span> '+msg:'<span class="err">Răspuns greșit.</span> Reia calculul pas cu pas.';}
+function checkPair(){const a=Number(document.getElementById('ex3a').value),b=Number(document.getElementById('ex3b').value);document.getElementById('ex3f').innerHTML=a===8&&b===7?'<span class="ok">Perfect!</span> 8 elemente, index maxim 7.':'<span class="err">Mai încearcă.</span> Pentru N elemente, ultimul index este N-1.';}
+function updateProgress(){const n=document.querySelectorAll('.lesson:checked').length;document.getElementById('progressBar').style.width=(n/8*100)+'%';document.getElementById('progressText').textContent=n+' / 8 lecții marcate';}
+function loadExample(){document.getElementById('cppCode').value=`#include <iostream>
+using namespace std;
+int main() {
+    int v[5], suma = 0, pare = 0;
+    for (int i = 0; i < 5; i++) {
+        cin >> v[i];
+        suma += v[i];
+        if (v[i] % 2 == 0) pare++;
+    }
+    cout << "Suma = " << suma << '\\\\n';
+    cout << "Pare = " << pare << '\\\\n';
+    return 0;
+}`;document.getElementById('stdin').value='2 5 8 1 4';document.getElementById('compiler').scrollIntoView({behavior:'smooth'});}
+function loadParity(){document.getElementById('cppCode').value=`#include <iostream>
+using namespace std;
+int main() {
+    int n;
+    cin >> n;
+    // Completeaza conditia si afisarea
+    if (/* conditie */) {
+        cout << "PAR";
+    } else {
+        cout << "IMPAR";
+    }
+    return 0;
+}`;document.getElementById('stdin').value='14';document.getElementById('compiler').scrollIntoView({behavior:'smooth'});}
+async function compileCpp(){
+ const code=document.getElementById('cppCode').value, stdin=document.getElementById('stdin').value;
+ const out=document.getElementById('compileOutput'), status=document.getElementById('compileStatus'), btn=document.getElementById('runBtn');
+ if(!code.trim()){out.textContent='Editorul este gol.';return;}
+ btn.disabled=true;btn.textContent='Se compilează…';status.textContent='Se trimite codul către compilatorul online…';out.textContent='Așteaptă rezultatul.';
+ try{
+  const res=await fetch('https://wandbox.org/api/compile.json',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({compiler:'gcc-head',code:code,stdin:stdin,options:'warning,gnu++20'})});
+  if(!res.ok)throw new Error('Serviciul a răspuns cu HTTP '+res.status);
+  const data=await res.json();
+  let txt='';
+  if(data.compiler_message)txt+='=== COMPILATOR ===\\n'+data.compiler_message+'\\n';
+  if(data.program_message)txt+='=== OUTPUT ===\\n'+data.program_message+'\\n';
+  if(data.status&&data.status!=='0')txt+='\\nCod de ieșire: '+data.status;
+  out.textContent=txt||'Programul s-a executat fără output.';
+  status.textContent=data.status==='0'?'Execuție încheiată. Verifică dacă outputul corespunde testului.':'Compilare/execuție încheiată cu avertismente sau eroare.';
+ }catch(e){out.textContent='Nu am putut contacta compilatorul online.\\n'+e.message+'\\n\\nVerifică internetul sau încearcă mai târziu. Poți copia codul în Code::Blocks / Visual Studio.';status.textContent='Compilator indisponibil momentan.';}
+ finally{btn.disabled=false;btn.textContent='⚙ Compilează și rulează';}
+}
+const questions=[
+ {q:'Ce index are primul element al unui tablou C++?',a:['0','1','-1'],c:0,e:'Indexarea tablourilor C++ începe de la 0.'},
+ {q:'Ce structură este potrivită pentru citire până la 0, când nu știi câte valori vor fi?',a:['for cu 100 pași','while','if'],c:1,e:'while repetă atât timp cât condiția este adevărată.'},
+ {q:'Ce produce 18 % 7?',a:['2','4','7'],c:1,e:'7*2=14, restul este 4.'},
+ {q:'Când actualizezi stocul într-o cerere care poate eșua?',a:['Imediat, după fiecare categorie','Doar după ce verifici că cererea poate fi onorată integral','Niciodată'],c:1,e:'Calculezi propunerea temporar și confirmi doar la succes.'},
+ {q:'Ce înseamnă == ?',a:['Atribuire','Comparație de egalitate','Incrementare'],c:1,e:'== compară două valori; = atribuie.'}
+];
+function renderQuiz(){document.getElementById('quizQuestions').innerHTML=questions.map((q,i)=>'<div class="exercise"><b>'+(i+1)+'. '+q.q+'</b>'+q.a.map((a,j)=>'<label style="display:block"><input type="radio" name="quiz'+i+'" value="'+j+'"> '+a+'</label>').join('')+'</div>').join('');}
+function gradeQuiz(){let score=0,details=[];questions.forEach((q,i)=>{const el=document.querySelector('input[name="quiz'+i+'"]:checked');if(el&&Number(el.value)===q.c)score++;details.push((i+1)+'. '+(el&&Number(el.value)===q.c?'Corect':'Greșit')+' – '+q.e);});document.getElementById('quizResult').innerHTML='<b>Scor: '+score+'/'+questions.length+'</b><br>'+details.join('<br>');}
+renderQuiz();
+</script></body></html>
